@@ -1,0 +1,16 @@
+# Ignore raw large datasets
+data/raw/*.csv
+data/raw/*.parquet
+data/raw/*
+
+# Ignore processed data (optional)
+data/processed/*
+
+# Ignore model artifacts
+models/*.pkl
+models/*.joblib
+
+# Common OS / IDE junk
+.DS_Store
+.ipynb_checkpoints/
+__pycache__/
