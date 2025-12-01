@@ -1,16 +1,10 @@
-# Ignore raw large datasets
-data/raw/*.csv
-data/raw/*.parquet
+# data
 data/raw/*
+!data/raw/.gitkeep
 
-# Ignore processed data (optional)
-data/processed/*
+# data/processed/*.parquet
 
-# Ignore model artifacts
-models/*.pkl
-models/*.joblib
+# models/*.pkl
 
-# Common OS / IDE junk
-.DS_Store
+# Jupyter
 .ipynb_checkpoints/
-__pycache__/
