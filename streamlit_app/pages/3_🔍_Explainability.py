@@ -142,7 +142,7 @@ try:
         
         st.markdown(f"**Interpretation for {selected_feature}:**")
         if selected_feature == 'company_age':
-            st.info("Older companies generally have higher success probability. This makes sense as they've had more time to reach acquisition.")
+            st.info("Younger companies generally have higher success probability. This makes sense as startups that achieve success (acquisition) tend to do so relatively early in their lifecycle, while older companies that haven't been acquired are more likely to be struggling.")
         elif selected_feature == 'age_last_funding_year':
             st.info("Recent funding activity (lower age at last funding) is a strong positive signal for success.")
         elif selected_feature == 'relationships':
@@ -326,7 +326,7 @@ try:
     <div class="insight-box">
     <h3 style="color: #1e293b; margin-top: 0;">Top Contributing Features:</h3>
     <ol style="color: #1e293b; line-height: 1.8;">
-        <li><strong>Company Age</strong>: The most important feature. Older companies have significantly higher success rates.</li>
+        <li><strong>Company Age</strong>: The most important feature. Younger companies have significantly higher success rates, as successful startups typically achieve acquisition early in their lifecycle.</li>
         <li><strong>Age at Last Funding</strong>: Recent funding activity is a strong positive signal.</li>
         <li><strong>Relationships</strong>: Network effects matter - more connections correlate with success.</li>
         <li><strong>Funding Total</strong>: Capital raised is important, though with diminishing returns.</li>

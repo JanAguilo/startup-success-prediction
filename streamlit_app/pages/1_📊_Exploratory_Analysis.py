@@ -36,6 +36,26 @@ st.markdown("""
         margin: 1rem 0;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    /* Style multiselect filter tags to match title color */
+    .stMultiSelect [data-baseweb="tag"] {
+        background-color: #667eea !important;
+        color: white !important;
+        border-color: #667eea !important;
+    }
+    .stMultiSelect [data-baseweb="tag"]:hover {
+        background-color: #764ba2 !important;
+        border-color: #764ba2 !important;
+    }
+    /* Target all multiselect tags in sidebar */
+    section[data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"] {
+        background-color: #667eea !important;
+        color: white !important;
+        border-color: #667eea !important;
+    }
+    section[data-testid="stSidebar"] .stMultiSelect [data-baseweb="tag"]:hover {
+        background-color: #764ba2 !important;
+        border-color: #764ba2 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
