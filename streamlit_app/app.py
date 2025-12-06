@@ -46,16 +46,69 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Paths
-BASE_DIR = Path(__file__).parent.parent
-DATA_PATH = BASE_DIR / "data" / "raw" / "startup_data.csv"
-MODEL_PATH = BASE_DIR / "streamlit_app" / "model.pkl"
-PREPROCESSOR_PATH = BASE_DIR / "streamlit_app" / "preprocessor.pkl"
+# Paths - Handle different execution contexts
+# Get the directory where this script is located
+SCRIPT_DIR = Path(__file__).parent.absolute()
+# Get the project root (parent of streamlit_app)
+BASE_DIR = SCRIPT_DIR.parent.absolute()
+
+# Try multiple possible paths for the data file
+possible_data_paths = [
+    BASE_DIR / "data" / "raw" / "startup_data.csv",
+    SCRIPT_DIR / ".." / "data" / "raw" / "startup_data.csv",
+    Path("data/raw/startup_data.csv").absolute(),
+    Path("../data/raw/startup_data.csv").absolute(),
+]
+
+DATA_PATH = None
+for path in possible_data_paths:
+    # Resolve any .. in the path
+    try:
+        resolved_path = path.resolve()
+        if resolved_path.exists() and resolved_path.is_file():
+            DATA_PATH = resolved_path
+            break
+    except (OSError, RuntimeError):
+        continue
+
+# If still not found, try searching from BASE_DIR
+if DATA_PATH is None:
+    data_dir = BASE_DIR / "data" / "raw"
+    if data_dir.exists():
+        csv_files = list(data_dir.glob("*.csv"))
+        if csv_files:
+            DATA_PATH = csv_files[0]
+
+# Final fallback: try from current working directory
+if DATA_PATH is None:
+    cwd_data_path = Path(os.getcwd()) / "data" / "raw" / "startup_data.csv"
+    if cwd_data_path.exists():
+        DATA_PATH = cwd_data_path.resolve()
+
+MODEL_PATH = SCRIPT_DIR / "model.pkl"
+PREPROCESSOR_PATH = SCRIPT_DIR / "preprocessor.pkl"
 
 # Helper functions
 @st.cache_data
 def load_data():
     """Load and cache the startup dataset"""
+    if DATA_PATH is None or not DATA_PATH.exists():
+        error_msg = f"❌ Data file 'startup_data.csv' not found!\n\n"
+        error_msg += f"**Searched locations:**\n"
+        for i, path in enumerate(possible_data_paths, 1):
+            try:
+                resolved = path.resolve()
+                exists = "✓" if resolved.exists() else "✗"
+                error_msg += f"{i}. {exists} {resolved}\n"
+            except:
+                error_msg += f"{i}. ✗ {path}\n"
+        error_msg += f"\n**Current working directory:** {os.getcwd()}\n"
+        error_msg += f"**Script directory:** {SCRIPT_DIR}\n"
+        error_msg += f"**Base directory:** {BASE_DIR}\n\n"
+        error_msg += f"Please ensure 'startup_data.csv' exists in 'data/raw/' directory."
+        st.error(error_msg)
+        raise FileNotFoundError(f"Data file not found at any expected location")
+    
     df = pd.read_csv(DATA_PATH)
     return df
 
