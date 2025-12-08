@@ -1,9 +1,12 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage[a4paper, margin=1in]{geometry}
+\usepackage[breaklinks]{hyperref}
 \usepackage{url}
+\usepackage{microtype}
 \usepackage{titling}
 \setlength{\droptitle}{-4em}
+\urlstyle{same}
 
 \title{Startup Success Prediction Report}
 \author{Pau Chaves \& Jan Aguiló}
@@ -20,7 +23,7 @@ Venture capital firms continue to invest heavily in startups, yet choosing which
 
 The dataset used in this project is the Startup Success Prediction Dataset from Kaggle (\url{https://www.kaggle.com/datasets/manishkc06/startup-success-prediction}). The dataset contains 923 startups founded between 1995 and 2013, with 49 initial variables describing various aspects of each startup.
 
-A basic exploratory analysis reveals that the dataset includes information about startup location (latitude, longitude, state, city), founding and closure dates, funding history (total funding, number of rounds, funding dates), industry categories (software, web, mobile, enterprise, etc.), investment types (VC, angel, rounds A-D), relationships, milestones, and other characteristics. The target variable indicates whether each startup was acquired (success) or closed (failure), with approximately 65\% of startups classified as successful and 35\% as failures. The dataset exhibits typical startup ecosystem patterns, including right-skewed funding distributions and geographic concentration in major tech hubs such as California, New York, Massachusetts, and Texas.
+The dataset includes location data, founding and closure dates, funding history, industry categories, investment types, relationships, and milestones. The target variable classifies startups as acquired (success, 65\%) or closed (failure, 35\%). The data exhibits right-skewed funding distributions and geographic concentration in major tech hubs (California, New York, Massachusetts, Texas).
 
 \section{Business questions and objectives}
 
@@ -34,7 +37,6 @@ This project addresses three key business questions:
 
 The \textbf{overall objective} of this project is threefold. First, we aim to \textbf{develop a reliable and interpretable machine learning model} trained on historical startup data, capable of predicting the probability of success for early-stage ventures. This model should identify the most influential features from a wide range of startup attributes and produce accurate, validated predictions that could support decision-making in the startup and investment landscape. Second, we intend to build a fully \textbf{interactive Streamlit web application} that allows users to explore the dataset, input startup characteristics, and receive real-time predictions about success likelihood. The app is designed to be intuitive and practical, providing a user-friendly interface for experimentation and analysis. Third, the project places \textbf{strong emphasis on explainability}: using SHAP, we will break down the contribution of each input variable to the model's predictions. This enables users to understand not just the output, but the reasoning behind it, providing both global insights into general success patterns and local explanations tailored to individual startups. 
 
-Together, these objectives aim to create a tool that is both analytically sound and accessible for stakeholders interested in the dynamics of startup success.
 
 \section{Methodology}
 
@@ -46,7 +48,10 @@ The initial dataset contained 923 startups with 49 variables. Non-informative co
 
 \subsubsection{Feature Engineering}
 
-Six key engineered features were created: \textit{company\_age} (lifespan from founding to closure or last funding), \textit{time\_to\_first\_funding} (duration before securing first investment), \textit{funding\_duration} (active fundraising period length), and \textit{has\_milestones} (binary indicator for milestone achievement). \textit{avg\_funding\_per\_round} was initially created but later removed due to multicollinearity. Log-transformed funding variables were considered but removed to prevent data leakage.
+To improve predictive performance, we create new variables that describe the lifecycle and financial behavior of startups, capturing temporal patterns, investment progression, and milestone signals. The following key engineered features were created: \textit{company\_age} (lifespan from founding to closure or last known funding), \textit{time\_to\_first\_funding} (how quickly a startup secured its first investment), and \textit{funding\_duration} (length of active fundraising period).
+Additional features include \textit{average funding per round} (signals scale and growth), \textit{milestone indicators} (projects with milestones tend to be more structured), and \textit{big rounds indicator} (detects startups with unusually large fundraising histories).
+\textit{avg\_funding\_per\_round} was initially created but later removed due to multicollinearity.
+Log-transformed funding variables were considered but removed to prevent data leakage.
 
 \subsubsection{Feature Selection and Multicollinearity Analysis}
 
