@@ -66,11 +66,13 @@ try:
         
         with col1:
             st.markdown("#### Location & Geography")
+            state_options = sorted([col.replace('state_code_', '') for col in X_train.columns if col.startswith('state_code_')])
+            ca_index = state_options.index('CA') if 'CA' in state_options else 0
             state_code = st.selectbox("State Code", 
-                options=sorted([col.replace('state_code_', '') for col in X_train.columns if col.startswith('state_code_')]),
-                index=0)
+                options=state_options,
+                index=ca_index)
             
-            is_CA = st.checkbox("California", value=False)
+            is_CA = st.checkbox("California", value=True)
             is_NY = st.checkbox("New York", value=False)
             is_MA = st.checkbox("Massachusetts", value=False)
             is_TX = st.checkbox("Texas", value=False)
@@ -79,15 +81,15 @@ try:
         with col2:
             st.markdown("#### Funding Information")
             funding_total_usd = st.number_input("Total Funding (USD)", 
-                min_value=0, value=1000000, step=100000, format="%d")
+                min_value=0, value=4200000, step=100000, format="%d")
             funding_rounds = st.number_input("Number of Funding Rounds", 
-                min_value=0, value=1, step=1)
+                min_value=0, value=2, step=1)
             age_first_funding_year = st.number_input("Age at First Funding (Years)", 
                 min_value=0.0, value=2.0, step=0.1, format="%.2f")
             age_last_funding_year = st.number_input("Age at Last Funding (Years)", 
-                min_value=0.0, value=5.0, step=0.1, format="%.2f")
+                min_value=0.0, value=4.0, step=0.1, format="%.2f")
             avg_participants = st.number_input("Average Participants per Round", 
-                min_value=0.0, value=2.0, step=0.1, format="%.2f")
+                min_value=0.0, value=4.0, step=0.1, format="%.2f")
         
         col1, col2 = st.columns(2)
         
@@ -96,14 +98,14 @@ try:
             company_age = st.number_input("Company Age (Years)", 
                 min_value=0.0, value=5.0, step=0.1, format="%.2f")
             time_to_first_funding = st.number_input("Time to First Funding (Years)", 
-                min_value=0.0, value=1.5, step=0.1, format="%.2f")
+                min_value=0.0, value=2.0, step=0.1, format="%.2f")
             funding_duration = st.number_input("Funding Duration (Years)", 
-                min_value=0.0, value=3.0, step=0.1, format="%.2f")
+                min_value=0.0, value=2.0, step=0.1, format="%.2f")
         
         with col2:
             st.markdown("#### Network & Milestones")
             relationships = st.number_input("Number of Relationships", 
-                min_value=0, value=1, step=1)
+                min_value=0, value=8, step=1)
             milestones = st.number_input("Number of Milestones", 
                 min_value=0, value=5, step=1)
             has_milestones = st.checkbox("Has Milestones", value=True)
@@ -111,8 +113,8 @@ try:
         st.markdown("#### Industry Category")
         col1, col2, col3 = st.columns(3)
         with col1:
-            is_software = st.checkbox("Software", value=False)
-            is_web = st.checkbox("Web", value=False)
+            is_software = st.checkbox("Software", value=True)
+            is_web = st.checkbox("Web", value=True)
             is_mobile = st.checkbox("Mobile", value=False)
         with col2:
             is_enterprise = st.checkbox("Enterprise", value=False)
@@ -126,7 +128,7 @@ try:
         st.markdown("#### Funding Type")
         col1, col2 = st.columns(2)
         with col1:
-            has_VC = st.checkbox("Has VC Funding", value=False)
+            has_VC = st.checkbox("Has VC Funding", value=True)
             has_angel = st.checkbox("Has Angel Funding", value=False)
             has_roundA = st.checkbox("Has Round A", value=False)
         with col2:
